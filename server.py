@@ -4,23 +4,23 @@ import errno
 from multiprocessing import Process
 
 def displayMenu(s_sock):
-	s_sock.send(str.encode('This is the menu :D'))
+	s_sock.send(str.encode('\t====MAIN MENU====\n\t [1] Thor and Love\n\t [2] Iron Man\n\t [exit] Cancel\n\n'))
 
 def thor(i):
-	print('Movie: Thor and Love for '+i+ ' seats\n')
+	print('\nMovie: Thor and Love for '+i+ ' seats\n')
 	i=float(i)
 	ans = 8*i
 	print("Total: RM ",ans)
 	return ans
 def tony(i):
-	print('Movie: Iron Man for ' +i+' seats\n')
+	print('\nMovie: Iron Man for ' +i+' seats\n')
 	i=float(i)
 	ans = 9*i
 	print("Total: RM ", ans)
 	return ans
 
 def process_start(s_sock):
-	s_sock.send(str.encode('Welcome to Matahari Cinema'))
+	s_sock.send(str.encode('Welcome to Matahari Cinema\n'))
 
 	while True:
 		displayMenu(s_sock)
