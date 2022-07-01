@@ -1,3 +1,4 @@
+#aku penatla kalau asyik tkleh push ni
 import socket
 
 ClientSocket = socket.socket()
