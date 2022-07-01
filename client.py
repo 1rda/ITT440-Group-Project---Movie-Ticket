@@ -1,4 +1,3 @@
-#aku penatla kalau asyik tkleh push ni
 import socket
 
 ClientSocket = socket.socket()
@@ -20,25 +19,17 @@ while True:
 	print(menu.decode('utf-8'))
 
 	print("\n\t Choose your desired Movie!\t\n\n")
-	func=input("\t [1] Thor and Love\n\t [2] Iron Man\n\t [exit] Cancel\nMenu: ")
+	func=input("Movie: ")
+	#result=input("Seats: ")
 
-	if (func == '1'):
-		print("\n\nHow many seats?")
-		result=input("[?] Seats: ")
-	elif (func == '2'):
-		print("\n\nHow many seats?")
-		result=input("[?] Seats: ")
-	elif (func == 'exit'):
+	if (func == 'exit'):
 		break
+	else:
+		result=input("Seats: ")
 
-	msg=func+" "+result
-
-	ClientSocket.send(str.encode(msg))
-	#menu = ClientSocket.recv(1024)
-	#print(menu.decode('utf-8'))
-	tot = ClientSocket.recv(1024)
-	print(tot.decode('utf-8'))
-
-	#break
+		msg=func+" "+result
+		ClientSocket.send(str.encode(msg))
+		tot = ClientSocket.recv(1024)
+		print(tot.decode('utf-8'))
 
 ClientSocket.close()
