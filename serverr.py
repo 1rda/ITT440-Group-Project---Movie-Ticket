@@ -4,47 +4,48 @@ import sys
 import errno
 from multiprocessing import Process
 
-def displayMenu(s_sock):
-	s_sock.send(str.encode('\t====MAIN MENU====\n\t [1] Thor and Love\n\t [2] Iron Man\n\t [exit] Cancel\n\n'))
+#def seats(s_sock, i)
 
-def thor(i):
-	print('\nMovie: Thor and Love for '+i+ ' seats\n')
-	i=float(i)
-	ans = 8*i
-	print("Total: RM ",ans)
-	return ans
+def displayMenu(s_sock):
+	s_sock.send(str.encode('\t====MAIN MENU====\n\t [1] Thor and Love\n\t [2] Iron Man\n\t [3] Cancel\n\n\n\t Choose your desired Movie!\t\n\n'))
+
+def thor(s_sock):
+	s_sock.send(str.encode('\nMovie: Thor and Love\n\nShowtime: (1)12:00\t(2)15:00'))
+	option = s_sock.recv(2048)
+	return option
 def tony(i):
-	print('\nMovie: Iron Man for ' +i+' seats\n')
-	i=float(i)
-	ans = 9*i
-	print("Total: RM ", ans)
-	return ans
+	s_sock.send(str.encode('\nMovie: Iron Man\n\nShowtime: (1)9:00\t(2)21:00'))
+	option = s_sock.recv(2048)
+	return option
 
 def process_start(s_sock):
 	s_sock.send(str.encode('Welcome to Matahari Cinema\n'))
 
 	while True:
 		displayMenu(s_sock)
-		data = s_sock.recv(2048)
-		data = data.decode('utf-8')
+		func = s_sock.recv(2048)
+		func = func.decode('utf-8')
 
-		try:
+		'''try:
 			func, result = data.split(" ",2)
 		except:
 			print(" no data received \n")
 			break
-
+'''
 		if (func == '1'):
-			ans=thor(result)
-			#s_sock.send(str.encode('Total is ',ans))
+			showtime = thor(s_sock)
+			#seats(s_sock)
+			#payment(s_sock)
 		elif (func == '2'):
-			ans=tony(result)
-		elif (func  == 'exit'):
+			showtime = tony(s_sock)
+			#seats(s_sock)
+			#payment(s_sock)
+		elif (func == '3'):
 			break
 
 
-		equal ="\nTotal is: RM%s\n"% str(ans)
-		s_sock.send(equal.encode())
+		#equal ="\nTotal is: RM%s\n"% str(ans)
+		#s_sock.send(equal.encode())
 	s_sock.close()
 
 if __name__ == '__main__':
