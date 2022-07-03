@@ -2,7 +2,7 @@ import socket
 
 ClientSocket = socket.socket()
 
-host = '192.168.56.115'
+host = '192.168.56.101'
 port = 8888
 
 try:
@@ -20,15 +20,24 @@ while True:
 
 	print("\n\t Choose your desired Movie!\t\n\n")
 	func=input("Movie: ")
+
+
+	#seat = ClientSocket.recv(1024)
+	#print(seat.decode('utf-8'))
+
 	#result=input("Seats: ")
 
 	if (func == 'exit'):
 		break
 	else:
 		result=input("Seats: ")
-
-		msg=func+" "+result
+		
+		#Row = int (input('Enter row - '))
+		#Seats = int(input('Enter seats in a row -'))
+		msg=func+" "+result+" "
+		#gsm=Row+" "+Seats+" "
 		ClientSocket.send(str.encode(msg))
+		#ClientSocket.send(str.encode(gsm))
 		tot = ClientSocket.recv(1024)
 		print(tot.decode('utf-8'))
 
