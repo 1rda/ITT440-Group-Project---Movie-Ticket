@@ -18,27 +18,20 @@ while True:
 	menu = ClientSocket.recv(1024)
 	print(menu.decode('utf-8'))
 
-	print("\n\t Choose your desired Movie!\t\n\n")
+	#print("\n\t Choose your desired Movie!\t\n\n")
 	func=input("Movie: ")
+	ClientSocket.send(str.encode(func))
 
-
-	#seat = ClientSocket.recv(1024)
 	#print(seat.decode('utf-8'))
 
 	#result=input("Seats: ")
 
-	if (func == 'exit'):
+	if (func == '3'):
 		break
 	else:
-		result=input("Seats: ")
-		
-		#Row = int (input('Enter row - '))
-		#Seats = int(input('Enter seats in a row -'))
-		msg=func+" "+result+" "
-		#gsm=Row+" "+Seats+" "
-		ClientSocket.send(str.encode(msg))
-		#ClientSocket.send(str.encode(gsm))
-		tot = ClientSocket.recv(1024)
-		print(tot.decode('utf-8'))
+		showtime = ClientSocket.recv(1024)
+		print(showtime.decode('utf-8'))
+		option = input('\nPick a showtime: ')
+		ClientSocket.send(str.encode(option))
 
 ClientSocket.close()
