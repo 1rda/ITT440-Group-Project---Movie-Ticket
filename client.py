@@ -10,15 +10,14 @@ try:
 except socket.error as e:
 	print(str(e))
 
-welcome = ClientSocket.recv(1024)
+welcome = ClientSocket.recv(2048)
 print(welcome.decode('utf-8'))
 
 while True:
 
-	menu = ClientSocket.recv(1024)
+	menu = ClientSocket.recv(2048)
 	print(menu.decode('utf-8'))
 
-	#print("\n\t Choose your desired Movie!\t\n\n")
 	func=input("Movie: ")
 	ClientSocket.send(str.encode(func))
 
@@ -29,9 +28,25 @@ while True:
 	if (func == '3'):
 		break
 	else:
-		showtime = ClientSocket.recv(1024)
+		showtime = ClientSocket.recv(2048)
 		print(showtime.decode('utf-8'))
 		option = input('\nPick a showtime: ')
 		ClientSocket.send(str.encode(option))
+
+		#ask for number of seats
+		numseats = ClientSocket.recv(2048)
+		num_seats = input(numseats.decode('utf-8'))
+		ClientSocket.send(str.encode(num_seats))
+
+		#display seats
+		seatsdisplay = ClientSocket.recv(2048)
+		print(seatsdisplay.decode('utf-8'))
+
+		#choose seats
+		seats = ClientSocket.recv(2048)
+
+		for x in range(int(num_seats)):
+			pickedSeat = input(seats.decode('utf-8'))
+			ClientSocket.send(str.encode(pickedSeat))
 
 ClientSocket.close()
