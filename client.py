@@ -33,6 +33,11 @@ while True:
 		option = input('\nPick a showtime: ')
 		ClientSocket.send(str.encode(option))
 
+		hallz = ClientSocket.recv(2048)
+		print(hallz.decode('utf-8'))
+		halls = input('\nPick a Hall: ')
+		ClientSocket.send(str.encode(halls))
+
 		#ask for number of seats
 		numseats = ClientSocket.recv(2048)
 		num_seats = input(numseats.decode('utf-8'))
