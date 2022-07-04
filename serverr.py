@@ -10,39 +10,49 @@ def seats(s_sock):
 	s_sock.send(str.encode('Number of seat(s): '))
 	numseats = s_sock.recv(2048)
 	s_sock.send(str.encode('----------------[Screen]----------------\n\n\t| A1 | A2 | A3 | A4 | A5 |\n\t| B1 | B2 | B3 | B4 | B5 |\n\t| C1 | C2 | C3 | C4 | C5 |\n\t| D1 | D2 | D3 | D4 | D5 |\n\t| E1 | E2 | E3 | E4 | E5 |\n\n'))
+
+	takenSeats = ''
+
+	s_sock.send(str.encode('Unavailable seat(s): ' + takenSeats))
 	s_sock.send(str.encode('Choose your seat(s): '))
 
 	for x in range(int(numseats)):
 		pickedSeat = s_sock.recv(2048)
 		pickedSeat.decode('utf-8')
-		#seatsTaken.append(pickedSeat)
+		seatsTaken.append(pickedSeat)
 
-		for y in seatsTaken:
-			if (pickedSeat != y):
+		for y in range(len(seatsTaken) - 1):
+			if (seatsTaken[-1] != seatsTaken[y]):
 				continue
-			else:
-				seatsTaken.append(pickedSeat)
-				break
+			elif (seatsTaken[-1] == seatsTaken[y]):
+				#s_sock.send(str.encode('Seat is unavailable!'))
+				seatsTaken.pop(-1)
+				x -= 1
 
+		for z in seatsTaken:
+			takenSeats += seatsTaken
 
 	for x in seatsTaken:
 		print(x.decode('utf-8'))
 
+def receipt(s_sock,movie):
+	s_sock.send(str.encode('\n\n\t=====MATAHARI CINEMA====\n\t Movie: '+movie+'\n\t Total: \n\t Seat: \n\t======================\n\n\n='))
 
 def displayMenu(s_sock):
 	s_sock.send(str.encode('\t====MAIN MENU====\n\t [1] Thor and Love\n\t [2] Iron Man\n\t [3] Cancel\n\n\n\t Choose your desired Movie!\t\n\n'))
 
 def thor(s_sock):
-	s_sock.send(str.encode('\nMovie: Thor and Love\n\nShowtime: (1)12:00\t(2)15:00'))
+	s_sock.send(str.encode('\nMovie: Thor and Love\n\nShowtime: (1)12:00\t (2)15:00'))
 	option = s_sock.recv(2048)
+	#receipt(s_sock,"Thor and Love")
 	return option
 
 def hall(s_sock):
-	s_sock.send(str.encode('\nHall: (1)Hall 1\t(2)Hall 2'))
+	s_sock.send(str.encode('\nHall: [1] Hall 1\t[2] Hall 2'))
 	halls = s_sock.recv(2048)
 	return halls
 
-def tony(i):
+def tony(s_sock):
 	s_sock.send(str.encode('\nMovie: Iron Man\n\nShowtime: (1)9:00\t(2)21:00'))
 	option = s_sock.recv(2048)
 	return option
@@ -65,10 +75,8 @@ def process_start(s_sock):
 			showtime = thor(s_sock)
 			hall(s_sock)
 			seats(s_sock)
-			#hall= thor(s_sock)
-			#optionn = screen(s_sock)
 			#payment(s_sock)
-			#ticketGenerator(s_sock)
+			receipt(s_sock, "Thor and Love")
 		elif (func == '2'):
 			showtime = tony(s_sock)
 			hall(s_sock)
@@ -76,6 +84,7 @@ def process_start(s_sock):
 			#payment(s_sock)
 			#ticketGenerator(s_sock)
 		elif (func == '3'):
+			print('[-] Client has disconnected')
 			break
 
 
@@ -95,6 +104,7 @@ if __name__ == '__main__':
 			try:
 				s_sock, s_addr = s.accept()
 				p = Process(target = process_start, args = (s_sock, ))
+				print('Connection from: '+s_addr[0]+':'+str(s_addr[1]))
 				p.start()
 			except socket.error:
 				print('[!] Socket Error!')
