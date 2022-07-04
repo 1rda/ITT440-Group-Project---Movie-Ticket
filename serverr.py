@@ -36,6 +36,12 @@ def thor(s_sock):
 	s_sock.send(str.encode('\nMovie: Thor and Love\n\nShowtime: (1)12:00\t(2)15:00'))
 	option = s_sock.recv(2048)
 	return option
+
+def hall(s_sock):
+	s_sock.send(str.encode('\nHall: (1)Hall 1\t(2)Hall 2'))
+	halls = s_sock.recv(2048)
+	return halls
+
 def tony(i):
 	s_sock.send(str.encode('\nMovie: Iron Man\n\nShowtime: (1)9:00\t(2)21:00'))
 	option = s_sock.recv(2048)
@@ -57,11 +63,15 @@ def process_start(s_sock):
 '''
 		if (func == '1'):
 			showtime = thor(s_sock)
+			hall(s_sock)
 			seats(s_sock)
+			#hall= thor(s_sock)
+			#optionn = screen(s_sock)
 			#payment(s_sock)
 			#ticketGenerator(s_sock)
 		elif (func == '2'):
 			showtime = tony(s_sock)
+			hall(s_sock)
 			seats(s_sock)
 			#payment(s_sock)
 			#ticketGenerator(s_sock)
