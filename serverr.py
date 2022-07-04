@@ -3,8 +3,31 @@ import socket
 import sys
 import errno
 from multiprocessing import Process
+#seats = [A1, A2, A3, A4, A5, B1, B2, B3, B4, B5, C1, C2, C3, C4, C5, D1, D2, D3, D4, D5, E1, E2, E3, E4, E5]
+seatsTaken = []
 
-#def seats(s_sock, i)
+def seats(s_sock):
+	s_sock.send(str.encode('Number of seat(s): '))
+	numseats = s_sock.recv(2048)
+	s_sock.send(str.encode('----------------[Screen]----------------\n\n\t| A1 | A2 | A3 | A4 | A5 |\n\t| B1 | B2 | B3 | B4 | B5 |\n\t| C1 | C2 | C3 | C4 | C5 |\n\t| D1 | D2 | D3 | D4 | D5 |\n\t| E1 | E2 | E3 | E4 | E5 |\n\n'))
+	s_sock.send(str.encode('Choose your seat(s): '))
+
+	for x in range(int(numseats)):
+		pickedSeat = s_sock.recv(2048)
+		pickedSeat.decode('utf-8')
+		#seatsTaken.append(pickedSeat)
+
+		for y in seatsTaken:
+			if (pickedSeat != y):
+				continue
+			else:
+				seatsTaken.append(pickedSeat)
+				break
+
+
+	for x in seatsTaken:
+		print(x.decode('utf-8'))
+
 
 def displayMenu(s_sock):
 	s_sock.send(str.encode('\t====MAIN MENU====\n\t [1] Thor and Love\n\t [2] Iron Man\n\t [3] Cancel\n\n\n\t Choose your desired Movie!\t\n\n'))
@@ -34,12 +57,14 @@ def process_start(s_sock):
 '''
 		if (func == '1'):
 			showtime = thor(s_sock)
-			#seats(s_sock)
+			seats(s_sock)
 			#payment(s_sock)
+			#ticketGenerator(s_sock)
 		elif (func == '2'):
 			showtime = tony(s_sock)
-			#seats(s_sock)
+			seats(s_sock)
 			#payment(s_sock)
+			#ticketGenerator(s_sock)
 		elif (func == '3'):
 			break
 
