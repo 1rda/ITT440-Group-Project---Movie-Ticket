@@ -1,4 +1,4 @@
-\#bismillah
+#bismillah
 import socket
 import sys
 import errno
@@ -59,23 +59,36 @@ def seats(s_sock):
 	#for x in seatsTaken:
 		#print(x.decode('utf-8'))
 
-def receipt(s_sock,movie):
-	s_sock.send(str.encode('\n\n\t=====MATAHARI CINEMA====\n\t Movie: '+movie+'\n\t Total: \n\t Seat: \n\t======================\n\n\n='))
+#Printing ticket
+def receipt(s_sock,movie, i):
 
+	s_sock.send(str.encode('\n\n\t=====MATAHARI CINEMA====\n\t Movie: '+movie+'\n\t Total: RM' +str(i)+'\n\t Seat: \n\t======================\n\n\n'))
+
+#Calculating total
+def payment(s_sock, i):
+	s_sock.send(str.encode('\n[+] Printing ticket....\n'))
+	ans=int(i)*12
+
+	#ans=(a).encode('utf-8')
+	return ans
+
+#Display main menu
 def displayMenu(s_sock):
 	s_sock.send(str.encode('\t====MAIN MENU====\n\t [1] Thor and Love\n\t [2] Iron Man\n\t [3] Cancel\n\n\n\t Choose your desired Movie!\t\n\n'))
 
+#Display movie  1 and showtime
 def thor(s_sock):
 	s_sock.send(str.encode('\nMovie: Thor and Love\n\nShowtime: (1)12:00\t (2)15:00'))
 	option = s_sock.recv(2048)
-	#receipt(s_sock,"Thor and Love")
 	return option
 
+#Display hall
 def hall(s_sock):
 	s_sock.send(str.encode('\nHall: [1] Hall 1\t[2] Hall 2'))
 	halls = s_sock.recv(2048)
 	return halls
 
+#Display movie 2 and showtime
 def tony(s_sock):
 	s_sock.send(str.encode('\nMovie: Iron Man\n\nShowtime: (1)9:00\t(2)21:00'))
 	option = s_sock.recv(2048)
@@ -98,19 +111,19 @@ def process_start(s_sock):
 		if (func == '1'):
 			showtime = thor(s_sock)
 			hall(s_sock)
-			seats(s_sock)
-			#payment(s_sock)
-			receipt(s_sock, "Thor and Love")
+			s=seats(s_sock)
+			ans=payment(s_sock, s)
+			receipt(s_sock, "Thor and Love",ans)
 		elif (func == '2'):
 			showtime = tony(s_sock)
 			hall(s_sock)
 			seats(s_sock)
 			#payment(s_sock)
 			#ticketGenerator(s_sock)
+		#disconnects client
 		elif (func == '3'):
 			print('[-] Client has disconnected')
 			break
-
 
 		#equal ="\nTotal is: RM%s\n"% str(ans)
 		#s_sock.send(equal.encode())
