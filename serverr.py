@@ -2,9 +2,12 @@
 import socket
 import sys
 import errno
+import time
+from time import ctime
 from multiprocessing import Process
 #seats = [A1, A2, A3, A4, A5, B1, B2, B3, B4, B5, C1, C2, C3, C4, C5, D1, D2, D3, D4, D5, E1, E2, E3, E4, E5]
 seatsTaken = ['lol']
+
 
 def seats(s_sock):
 	s_sock.send(str.encode('Number of seat(s): '))
@@ -45,6 +48,7 @@ def seats(s_sock):
 
 def receipt(s_sock,movie):
 	s_sock.send(str.encode('\n\n\t=====MATAHARI CINEMA====\n\t Movie: '+movie+'\n\t Total: \n\t Seat: \n\t======================\n\n\n='))
+	s_sock.send(str.encode('\n\nTime: ' + ctime() + '\n\n'))
 
 def displayMenu(s_sock):
 	s_sock.send(str.encode('\t====MAIN MENU====\n\t [1] Thor and Love\n\t [2] Iron Man\n\t [3] Cancel\n\n\n\t Choose your desired Movie!\t\n\n'))
