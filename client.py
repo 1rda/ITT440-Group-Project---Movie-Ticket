@@ -3,7 +3,7 @@ import socket
 
 ClientSocket = socket.socket()
 
-host = '192.168.56.115'
+host = '192.168.56.101'
 port = 8888
 
 try:
@@ -52,7 +52,7 @@ while True:
 		print(seatsdisplay.decode('utf-8'))
 
 		#unavailable seats
-		cannotSeat = ClientSocket.recv(2048)
+		#cannotSeat = ClientSocket.recv(2048)
 
 		#choose seats
 		seats = ClientSocket.recv(2048)
@@ -60,6 +60,19 @@ while True:
 		for x in range(int(num_seats)):
 			pickedSeat = input(seats.decode('utf-8'))
 			ClientSocket.send(str.encode(pickedSeat))
+			msg = ClientSocket.recv(2048)
+			#msg.decode('utf-8')
+			if(msg.decode('utf-8') != '0'):
+				print(msg.decode('utf-8'))
+				print('')
+				repickSeat = ClientSocket.recv(2048)
+				try:
+					pickedSeat = input(repickSeat.decode('utf-8'))
+				except:
+					print('Nope.')
+				ClientSocket.send(str.encode(pickedSeat))
+			else:
+				msg = ''
 
 		recep = ClientSocket.recv(2048)
 		print(recep.decode('utf-8'))
