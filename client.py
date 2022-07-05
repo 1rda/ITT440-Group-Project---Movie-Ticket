@@ -1,5 +1,6 @@
 #hehe
 import socket
+import time
 
 ClientSocket = socket.socket()
 
