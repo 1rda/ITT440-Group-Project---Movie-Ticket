@@ -4,7 +4,7 @@ import time
 
 ClientSocket = socket.socket()
 
-host = '192.168.56.101'
+host = '192.168.56.115'
 port = 8888
 
 try:
@@ -74,6 +74,8 @@ while True:
 				ClientSocket.send(str.encode(pickedSeat))
 			else:
 				msg = ''
+		pay = ClientSocket.recv(2048)
+		print(pay.decode('utf-8'))
 
 		recep = ClientSocket.recv(2048)
 		print(recep.decode('utf-8'))
