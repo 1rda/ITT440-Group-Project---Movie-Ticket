@@ -4,7 +4,7 @@ import time
 
 ClientSocket = socket.socket()
 
-host = '192.168.56.115'
+host = '192.168.56.101'
 port = 8888
 
 try:
