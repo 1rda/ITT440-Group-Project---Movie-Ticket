@@ -4,36 +4,44 @@ import sys
 import errno
 from multiprocessing import Process
 #seats = [A1, A2, A3, A4, A5, B1, B2, B3, B4, B5, C1, C2, C3, C4, C5, D1, D2, D3, D4, D5, E1, E2, E3, E4, E5]
-seatsTaken = []
+seatsTaken = ['lol']
 
 def seats(s_sock):
 	s_sock.send(str.encode('Number of seat(s): '))
 	numseats = s_sock.recv(2048)
 	s_sock.send(str.encode('----------------[Screen]----------------\n\n\t| A1 | A2 | A3 | A4 | A5 |\n\t| B1 | B2 | B3 | B4 | B5 |\n\t| C1 | C2 | C3 | C4 | C5 |\n\t| D1 | D2 | D3 | D4 | D5 |\n\t| E1 | E2 | E3 | E4 | E5 |\n\n'))
 
-	takenSeats = ''
+	#takenSeats = ''
 
-	s_sock.send(str.encode('Unavailable seat(s): ' + takenSeats))
+	#s_sock.send(str.encode('Unavailable seat(s): ' + takenSeats))
 	s_sock.send(str.encode('Choose your seat(s): '))
 
 	for x in range(int(numseats)):
 		pickedSeat = s_sock.recv(2048)
-		pickedSeat.decode('utf-8')
-		seatsTaken.append(pickedSeat)
+		#pickedSeat.decode('utf-8')
+		seatsTaken.append(pickedSeat.decode('utf-8'))
+		print(seatsTaken[-1])
 
-		for y in range(len(seatsTaken) - 1):
-			if (seatsTaken[-1] != seatsTaken[y]):
+		for y in range(len(seatsTaken)):
+			if (y == len(seatsTaken) - 1):
+				break
+			elif (seatsTaken[-1] != seatsTaken[y]):
+				s_sock.send(str.encode('0'))
 				continue
 			elif (seatsTaken[-1] == seatsTaken[y]):
-				#s_sock.send(str.encode('Seat is unavailable!'))
+				s_sock.send(str.encode(f'Seat {seatsTaken[-1]} is unavailable! Please pick another seat.\n'))
 				seatsTaken.pop(-1)
-				x -= 1
+				s_sock.send(str.encode('Choose your seat(s): '))
+				pickedSeat = s_sock.recv(2048)
+				seatsTaken.append(pickedSeat.decode('utf-8'))
+				print(seatsTaken[-1])
+				break
 
-		for z in seatsTaken:
-			takenSeats += seatsTaken
+		#for z in seatsTaken:
+			#takenSeats += seatsTaken
 
-	for x in seatsTaken:
-		print(x.decode('utf-8'))
+	#for x in seatsTaken:
+		#print(x.decode('utf-8'))
 
 def receipt(s_sock,movie):
 	s_sock.send(str.encode('\n\n\t=====MATAHARI CINEMA====\n\t Movie: '+movie+'\n\t Total: \n\t Seat: \n\t======================\n\n\n='))
