@@ -6,7 +6,7 @@ import time
 from time import ctime
 from multiprocessing import Process
 
-seatsTaken = ['picked']
+seatsTaken = []
 
 def seats(s_sock):
 	s_sock.send(str.encode('Number of seat(s): '))
@@ -17,20 +17,16 @@ def seats(s_sock):
 
 	for x in range(int(numseats)):
 		pickedSeat = s_sock.recv(2048)
-		print(seatsTaken[-1])
 
-		print(seatsTaken)
-		print(pickedSeat.decode('utf-8'))
 		if pickedSeat.decode('utf-8') not in seatsTaken:
 			seatsTaken.append(pickedSeat.decode('utf-8'))
-			print(seatsTaken)
 			s_sock.send(str.encode('0'))
 			continue
 		else:
 			s_sock.send(str.encode(f'Seat {pickedSeat.decode("utf-8")} is unavailable! Please pick another seat.\n'))
 			s_sock.send(str.encode('Choose your seat(s): '))
 			pickedSeat = s_sock.recv(2048)
-			print(pickedSeat.decode('utf-8'))
+			seatsTaken.append(pickedSeat.decode('utf-8'))
 
 	return numseats
 
@@ -44,8 +40,6 @@ def receipt(s_sock,movie, i):
 def payment(s_sock, i):
 	s_sock.send(str.encode('\n[+] Printing ticket....\n'))
 	ans=int(i)*12
-
-	#ans=(a).encode('utf-8')
 	return ans
 
 #Display main menu

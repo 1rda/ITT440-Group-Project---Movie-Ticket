@@ -52,9 +52,6 @@ while True:
 		seatsdisplay = ClientSocket.recv(2048)
 		print(seatsdisplay.decode('utf-8'))
 
-		#unavailable seats
-		#cannotSeat = ClientSocket.recv(2048)
-
 		#choose seats
 		seats = ClientSocket.recv(2048)
 
@@ -62,18 +59,16 @@ while True:
 			pickedSeat = input(seats.decode('utf-8'))
 			ClientSocket.send(str.encode(pickedSeat))
 			msg = ClientSocket.recv(2048)
-			#msg.decode('utf-8')
 			if(msg.decode('utf-8') != '0'):
 				print(msg.decode('utf-8'))
-				print('')
 				repickSeat = ClientSocket.recv(2048)
-				try:
-					pickedSeat = input(repickSeat.decode('utf-8'))
-				except:
-					print('Nope.')
+
+				#repick seat
+				pickedSeat = input(repickSeat.decode('utf-8'))
 				ClientSocket.send(str.encode(pickedSeat))
 			else:
 				msg = ''
+
 		pay = ClientSocket.recv(2048)
 		print(pay.decode('utf-8'))
 
